@@ -2,180 +2,89 @@
 
 
 # **OverView**
+> As we all know, the [COCO2014/2017](https://cocodataset.org/#home) dataset is widely used for object detection, instance segmentation, image description, key point detection, panoramic segmentation and many other tasks, the official has provided cocoapi's python, matlab, lua language interface, but in matlab using the interface provided by the program is very poor readability, not easy to intuitively clear, the use of people This program makes full use of the characteristics of the table type to enrich the expression of coco datasets, with only about 100 lines of code to achieve the "instances", "keypoints" ,"captions" level of API, without any third-party libraries, can be customized to modify the API, code readability.
 
-
-       As we all know, the [COCO2014/2017](https://cocodataset.org/#home) dataset is widely used for object detection, instance segmentation, image description, key point detection, panoramic segmentation and many other tasks, the official has provided cocoapi's python, matlab, lua language interface, but in matlab using the interface provided by the program is very poor readability, not easy to intuitively clear, the use of people This program makes full use of the characteristics of the table type to enrich the expression of coco datasets, with only about 100 lines of code to achieve the "instances", "keypoints" ,"captions" level of API, without any third-party libraries, can be customized to modify the API, code readability.
-
-
-
-
-      众所周知，[COCO2014/2017](https://cocodataset.org/#home)数据集被广泛用于目标检测、实例分割、图像描述、关键点检测、全景分割等多种任务，官方已提供cocoapi的python、matlab、lua语言的接口，但在matlab中使用其提供的接口程序可读性非常差，不易直观清晰，使用的人较少，本程序充分利用table类型的特性，丰富展示coco数据集的表达，仅用100行左右代码实现了“instances”、“keypoints”、“captions”级别的API，无需任何第三方库，可二次自定义修改API，代码可读性强。
-
+> 众所周知，COCO2014/2017数据集被广泛用于目标检测、实例分割、图像描述、关键点检测、全景分割等多种任务，官方已提供cocoapi的python、matlab、lua语言的接口，但在matlab中使用其提供的接口程序可读性非常差，不易直观清晰，使用的人较少，本程序充分利用table类型的特性，丰富展示coco数据集的表达，仅用100行左右代码实现了“instances”、“keypoints”、“captions”级别的API，无需任何第三方库，可二次自定义修改API，代码可读性强。
 
 # **Syntax**
 
 
 **[allCOCOdata,cocoDatastore,cocoNames] = cocoInstancesAPI(imagesDir,annotationFile,categoryNames)**
 
-
-
-
 **功能**：优雅的实现coco2014，coco2017数据集instances新接口 
 
-
-
-
  **输入**：
+`imagesDir，string类型，1*1大小，输入COCO图像文件根目录
 
+annotationFile，string类型，1*1大小，与之对应的标注json文件
 
-
-
-**        **imagesDir，string类型，1*1大小，输入COCO图像文件根目录
-
-
-
-
-        annotationFile，string类型，1*1大小，与之对应的标注json文件
-
-
-
-
-        categoryNames，（可选项）string类型，1*N大小，物体类别，默认所有类别
-
-
+categoryNames，（可选项）string类型，1*N大小，物体类别，默认所有类别`
 
 
 ** 输出**：
+`allCOCOdata， table类型，所有带有标注的完整信息，每行代表一副图像
+
+cocoDatastore，TransformedDatastore object，可就地迭代对象
+
+cocoNames，categorical类型，80个类别`
 
 
-
-
-**        **allCOCOdata， table类型，所有带有标注的完整信息，每行代表一副图像
-
-
-
-
-        cocoDatastore，TransformedDatastore object，可就地迭代对象
-
-
-
-
-        cocoNames，categorical类型，80个类别
-
-
-  
-
-
-** [allCOCOdata,cocoDatastore,keyPtsNames,skeleton] = cocoKeyPointsAPI(imagesDir,annotationFile)**
-
-
-
+**[allCOCOdata,cocoDatastore,keyPtsNames,skeleton] = cocoKeyPointsAPI(imagesDir,annotationFile)**
 
 ** 功能**：优雅的实现coco2014，coco2017数据集keypoints新接口
 
 
-
-
  **输入**：
 
+imagesDir，string类型，输入COCO图像文件根目录
 
-
-
-     imagesDir，string类型，输入COCO图像文件根目录
-
-
-
-
-     annotationFile，string类型，与之对应的标注json文件
-
-
+annotationFile，string类型，与之对应的标注json文件
 
 
 ** 输出**：
 
+allCOCOdata， table类型，所有带有标注的完整信息，每行代表一副图像
 
+cocoDatastore，TransformedDatastore object，可就地迭代对象
 
+keyPtsNames，categorical类型数组，长度为17，分别为人体各个部位id顺序名字
 
-     allCOCOdata， table类型，所有带有标注的完整信息，每行代表一副图像
-
-
-
-
-     cocoDatastore，TransformedDatastore object，可就地迭代对象
-
-
-
-
-     keyPtsNames，categorical类型数组，长度为17，分别为人体各个部位id顺序名字
-
-
-
-
-    skeleton，double类型数组，M*2大小，人体部位各个id连接情况，第一列与第二列id进行连接
-
-
-  
+skeleton，double类型数组，M*2大小，人体部位各个id连接情况，第一列与第二列id进行连接
 
 
 **[allCOCOdata,cocoDatastore] = cocoCaptionsAPI(imagesDir,annotationFile)**
 
-
-
-
 **功能**：优雅的实现coco2014，coco2017数据集Captions新接口
-
-
-
 
 **输入**：
 
+imagesDir，string类型，输入COCO图像文件根目录
 
-
-
-     imagesDir，string类型，输入COCO图像文件根目录
-
-
-
-
-    annotationFile，string类型，与之对应的标注json文件
-
-
+annotationFile，string类型，与之对应的标注json文件
 
 
 **输出**：
 
+allCOCOdata， table类型，所有带有标注的完整信息，每行代表一副图像
 
-
-
-     allCOCOdata， table类型，所有带有标注的完整信息，每行代表一副图像
-
-
-
-
-    cocoDatastore，TransformedDatastore object，可就地迭代对象
+cocoDatastore，TransformedDatastore object，可就地迭代对象
 
 
 # Requirements
 
    -  MatlabR2020b or higher 
-   \item{ \href{https://cocodataset.org/#download}{}[coco2014 or 2017 datasets (images and annotations)](https://cocodataset.org/#download) }
+   
+   - [coco2014 or 2017 datasets (images and annotations)](https://cocodataset.org/#download ) 
 
 # **How to use**
 
 
-一般做object detection/segmention/keypoints/captions,训练任务都会用到可迭代的datasets，比如对上述三类API返回数据\hyperref{M_BD055FA6}{cocoDatastore}进行[迭代使用](https://www.mathworks.com/help/matlab/ref/matlab.io.datastore.transformeddatastore.html)**，**read会从内存中读取部分数据，读取的数据直观上应当有以下返回形式数据格式：
+一般做object detection/segmention/keypoints/captions,训练任务都会用到可迭代的datasets，比如对上述三类API返回数据`cocoDatastore`进行[迭代使用](https://www.mathworks.com/help/matlab/ref/matlab.io.datastore.transformeddatastore.html ),read会从内存中读取部分数据，读取的数据直观上应当有以下返回形式数据格式：
 
-
-
-
-data =** **[read](https://www.mathworks.com/help/matlab/ref/matlab.io.datastore.read.html)(cocoDatastore)
-
-
+data = [read](https://www.mathworks.com/help/matlab/ref/matlab.io.datastore.read.html)(cocoDatastore)
 
 
 根据不同任务的API，返回元胞数组data中的元素有如下直观形式。
-
-
 
    -  RGB images (H x W x 3) 
    -  Bounding boxes (NumObjects x 4,  arranged as [x y w h]) 
@@ -387,8 +296,6 @@ end
 
 
 [1] [coco-datasets](https://cocodataset.org/)
-
-
 
 
 [2] [COCO数据集的标注格式](https://zhuanlan.zhihu.com/p/29393415)
