@@ -2,42 +2,46 @@
 
 
 # **OverView**
-> As we all know, the [COCO2014/2017](https://cocodataset.org/#home) dataset is widely used for object detection, instance segmentation, image description, key point detection, panoramic segmentation and many other tasks, the official has provided cocoapi's python, matlab, lua language interface, but in matlab using the interface provided by the program is very poor readability, not easy to intuitively clear, the use of people This program makes full use of the characteristics of the table type to enrich the expression of coco datasets, with only about 100 lines of code to achieve the "instances", "keypoints" ,"captions" level of API, without any third-party libraries, can be customized to modify the API, code readability.<br>
+> As we all know, the [COCO2014/2017](https://cocodataset.org/#home) dataset is widely used for object detection, instance segmentation, image description, key point detection,panoramic segmentation and many other tasks, the official has provided cocoapi's python, matlab, lua language interface, but in matlab using the interface provided by the program is very poor readability, not easy to intuitively clear. This program makes full use of the characteristics of the [table type](https://www.mathworks.com/help/matlab/matlab_prog/advantages-of-using-tables.html ) to enrich the expression of coco datasets, with only about 100 lines of code to achieve the "instances", "keypoints" ,"captions" level of API, without any third-party libraries, can be customized to modify the API, code readability.<br>
 
 # **Syntax**
 
-- **[allCOCOdata,cocoDatastore,cocoNames]=cocoInstancesAPI(imagesDir,annotationFile,categoryNames)**
+1. **[allCOCOdata,cocoDatastore,cocoNames]=cocoInstancesAPI(imagesDir,annotationFile,categoryNames)**
 
 **功能**：优雅的实现coco2014，coco2017数据集instances新接口 
 
  **输入**：
+ 
 `imagesDir`，string类型，1*1大小，输入COCO图像文件根目录
 
 `annotationFile`，string类型，1*1大小，与之对应的标注json文件
 
-`categoryNames`，（可选项）string类型，1*N大小，物体类别，默认所有类别`
+`categoryNames`，（可选项）string类型，1*N大小，物体类别，默认所有类别
 
 
 **输出**：
+
 `allCOCOdata`， table类型，所有带有标注的完整信息，每行代表一副图像
 
 `cocoDatastore`，TransformedDatastore object，可就地迭代对象
 
 `cocoNames`，categorical类型，80个类别`
 
-- **[allCOCOdata,cocoDatastore,keyPtsNames,skeleton]=cocoKeyPointsAPI(imagesDir,annotationFile)**
+<br>
+
+2. **[allCOCOdata,cocoDatastore,keyPtsNames,skeleton]=cocoKeyPointsAPI(imagesDir,annotationFile)**
 
 **功能**：优雅的实现coco2014，coco2017数据集keypoints新接口
 
 
- **输入**：
+**输入**：
 
 `imagesDir`，string类型，输入COCO图像文件根目录
 
 `annotationFile`，string类型，与之对应的标注json文件
 
 
-** 输出**：
+**输出**：
 
 `allCOCOdata`， table类型，所有带有标注的完整信息，每行代表一副图像
 
@@ -47,8 +51,9 @@
 
 `skeleton`，double类型数组，M*2大小，人体部位各个id连接情况，第一列与第二列id进行连接
 
+<br>
 
-- **[allCOCOdata,cocoDatastore] = cocoCaptionsAPI(imagesDir,annotationFile)**
+3.  **[allCOCOdata,cocoDatastore] = cocoCaptionsAPI(imagesDir,annotationFile)**
 
 **功能**：优雅的实现coco2014，coco2017数据集Captions新接口
 
@@ -65,6 +70,7 @@
 
 `cocoDatastore`，TransformedDatastore object，可就地迭代对象
 
+<br>
 
 # Requirements
 
@@ -91,7 +97,7 @@ data = [read](https://www.mathworks.com/help/matlab/ref/matlab.io.datastore.read
 
 # Example1, instance
 
-```
+```matlab
 % coco path
 imagesDir = '\\192.168.1.103\dataSets\coco2017\val2017\val2017';
 annotationFile = '\\192.168.1.103\dataSets\coco2017\annotations_trainval2017\annotations\instances_val2017.json';
@@ -115,7 +121,7 @@ head(allCOCOdata) % preview,Get top rows of table
 |8|17029|4|'000000017029.jpg'|'http://images.cocod...|640|640|'2013-11-18 14:33:10...|'http://farm8.static...|1|1x1 cell|0|[154.8400,105.8100,2...|18|
 
 
-```
+```matlab
 colormap = randi(255,length(coconames),3);
 cocoDatastore = shuffle(cocoDatastore); % random 
 while cocoDatastore.hasdata()
@@ -145,7 +151,7 @@ end
 
 # Example2, keypoints
 
-```
+```matlab
 imagesDir='\\192.168.1.103\dataSets\coco2017\val2017\val2017';
 annotationFile = '\\192.168.1.103\dataSets\coco2017\annotations_trainval2017\annotations\person_keypoints_val2017.json';
 [allCOCOdata,cocoDatastore,keyPtsNames,skeleton] = ...
@@ -165,7 +171,7 @@ head(allCOCOdata) % preview,Get top rows of table
 |8|1353|3|'000000001353.jpg'|'http://images.cocod...|500|375|'2013-11-17 04:33:52...|'http://farm3.static...|5|[{2x1,cell,};{1x1...|5x4 double|17x3x5  double|
 
 
-```
+```matlab
 cocoDatastore = shuffle(cocoDatastore); % random
 while cocoDatastore.hasdata()
     data = read(cocoDatastore);
@@ -192,7 +198,7 @@ end
 
 # Example3,captions
 
-```
+```matlab
 imagesDir = '\\192.168.1.103\dataSets\coco2017\val2017\val2017';
 annFile = '\\192.168.1.103\dataSets\coco2017\annotations_trainval2017\annotations\captions_val2017.json';
 [allCOCOdata,cocoDatastore] = cocoCaptionsAPI(imagesDir,annFile);
@@ -211,7 +217,7 @@ head(allCOCOdata) % preview,Get top rows of table
 |8|872|4|'000000000872.jpg'|'http://images.cocod...|640|621|'2013-11-23 00:37:47...|'http://farm9.static...|5|[{'A,couple,of,base...|
 
 
-```
+```matlab
 cocoDatastore = cocoDatastore.shuffle();
 while cocoDatastore.hasdata()
     data = read(cocoDatastore);
@@ -228,9 +234,9 @@ end
 
 ![figure_2.png](main_images/figure_2.png)
 
-# SupportFunction
+# Support Function
 
-```
+```matlab
 function drawRGB = drawSkeleton(image,keyPts,skeleton)
 % 功能：在输入图像image上绘制人体骨架图,只绘制标注过的点线
 % 输入：
